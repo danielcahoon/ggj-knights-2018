@@ -15,21 +15,22 @@ public class billboard : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        // face sprite at camera
-        transform.LookAt(Camera.main.transform.position, -Vector3.up);
 
         // show/hide billboard based on distance
         var distance = Vector3.Distance(Camera.main.transform.position, this.transform.position);
         if (distance < maxDistance && distance > minDistance)
         {
+            // face sprite at camera
+            transform.LookAt(Camera.main.transform.position, Vector3.up);
+
+            //scale billboard to fixed screen size
+            float size = (Camera.main.transform.position - transform.position).magnitude;
+            transform.localScale = new Vector3(size, size, size) * scaleFactor;
             GetComponent<Renderer>().enabled = true;
         } else
         {
             GetComponent<Renderer>().enabled = false;
         }
 
-        //scale billboard to fixed screen size
-        float size = (Camera.main.transform.position - transform.position).magnitude;
-        transform.localScale = new Vector3(size, size, size) * scaleFactor;
     }
 }
