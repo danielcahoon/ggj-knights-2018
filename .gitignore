@@ -32,3 +32,8 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+
+# IGNORE ALL ASSETS EXCEPT THE CODE
+Assets/*
+!Assets/Code
