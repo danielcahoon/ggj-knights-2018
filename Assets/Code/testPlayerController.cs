@@ -34,12 +34,10 @@ public class testPlayerController : MonoBehaviour {
         readInput();
 
         deathCheck ();
-		//Cursor.visible = false;
         if (grabMouse)
         {
             mouseLook();
         }
-        //Cursor.visible = false;
 
         var x = Input.GetAxis("Horizontal") * Time.deltaTime * 3.0f * this.transform.lossyScale.magnitude;
         var z = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f * this.transform.lossyScale.magnitude;
