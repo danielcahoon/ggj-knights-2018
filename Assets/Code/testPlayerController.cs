@@ -15,8 +15,8 @@ public class testPlayerController : MonoBehaviour {
         if (Input.GetMouseButton(1)) //strafing
         {
             Cursor.visible = false;
-            var x = Input.GetAxis("Horizontal") * Time.deltaTime * 3.0f;
-            var z = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f;
+            var x = Input.GetAxis("Horizontal") * Time.deltaTime * 3.0f * this.transform.lossyScale.magnitude;
+            var z = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f * this.transform.lossyScale.magnitude;
 
             transform.Translate(x, 0, 0);
             transform.Translate(0, 0, z);
@@ -26,7 +26,7 @@ public class testPlayerController : MonoBehaviour {
 
             Cursor.visible = true;
             var x = Input.GetAxis("Horizontal") * Time.deltaTime * 150.0f;
-            var z = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f;
+            var z = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f * this.transform.lossyScale.magnitude;
 
             transform.Rotate(0, x, 0);
             transform.Translate(0, 0, z);
