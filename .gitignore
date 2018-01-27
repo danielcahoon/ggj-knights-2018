@@ -37,3 +37,6 @@ sysinfo.txt
 # IGNORE ALL ASSETS EXCEPT THE CODE
 Assets/*
 !Assets/Code
+
+#STILL IGNORE
+Assets/Code/*.meta
