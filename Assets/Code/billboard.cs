@@ -10,9 +10,11 @@ public class billboard : MonoBehaviour {
     public float maxDistance = 10.0f;
     public float minDistance = 2.0f;
     public float menuDistance = 3.0f;
-    public float scaleFactor = 0.03f; //edit this to control size on screen
-
     public string menuTitle = "";
+    public float scaleFactor = 0.01f; //edit this to control size on screen
+    private float scaleFactorTMP;
+    public float scaleFactorTime = 0.1f;
+    
     public MenuOption[] menuOptionData;
 
     public GameObject menuPanel;
@@ -25,6 +27,7 @@ public class billboard : MonoBehaviour {
 	void Start () {
         menu = menuPanel.GetComponent<choiceMenu>();
         device = (DeviceBehavior)GetComponentInParent(typeof(DeviceBehavior));
+        scaleFactorTMP = scaleFactor;
     }
 	
 	// Update is called once per frame
@@ -37,33 +40,29 @@ public class billboard : MonoBehaviour {
             screenPoint.x < 1 &&
             screenPoint.y > 0 &&
             screenPoint.y < 1;
-
-
+        
         // show/hide billboard based on distance
         var distance = Vector3.Distance(Camera.main.transform.position, this.transform.position);
+        float size = (Camera.main.transform.position - transform.position).magnitude;
         if (distance < maxDistance && distance > minDistance && isOnScreen)
         {
             // face sprite at camera
             transform.LookAt(Camera.main.transform.position, Vector3.up);
-
-            //scale billboard to fixed screen size
-            float size = (Camera.main.transform.position - transform.position).magnitude;
-            transform.localScale = new Vector3(size, size, size) * scaleFactor;
-            if (!GetComponent<Renderer>().enabled) {
-
-                GetComponent<Renderer>().enabled = true;
-                //Debug.Log("on");
-            }
-        } else if (GetComponent<Renderer>().enabled)
+            scaleFactor = Mathf.Lerp(scaleFactor, scaleFactorTMP, Time.deltaTime / scaleFactorTime);
+        } else
         {
-            GetComponent<Renderer>().enabled = false;
-            //Debug.Log("off");
+            // face sprite at camera
+            transform.LookAt(Camera.main.transform.position, Vector3.up);
+            scaleFactor = Mathf.Lerp(scaleFactor, 0, Time.deltaTime / scaleFactorTime);
         }
+        //scale billboard to fixed screen size
+        transform.localScale = new Vector3(size, size, size) * scaleFactor;
 
         var shouldShowMenu = false;
 
         if (distance < menuDistance)
         {
+  
             if (isOnScreen)
             {
                 shouldShowMenu = true;
