@@ -11,11 +11,11 @@ public class Doomba : MonoBehaviour {
 	public float diversionAngle = 20.0f;
 	public float avoidanceDistance = 0.5f;
 	public float backupDistance = 0.5f;
-	public float initialHeight = 0.0f;
+    private float initialHeight = 0.0f;
 
-	// keep track of information about current state
-	// as well as when to stop that state
-	public bool infected = false;
+    // keep track of information about current state
+    // as well as when to stop that state
+    public bool infected = false;
 	public string state = "bumbling";
 	public float endTime = -1.0f;
 
