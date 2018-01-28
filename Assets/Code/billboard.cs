@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,10 +18,12 @@ public class billboard : MonoBehaviour {
 
     private bool isMenuDisplayed = false;
     private choiceMenu menu;
+    private DeviceBehavior device;
 
 	// Use this for initialization
 	void Start () {
         menu = menuPanel.GetComponent<choiceMenu>();
+        device = (DeviceBehavior)GetComponentInParent(typeof(DeviceBehavior));
     }
 	
 	// Update is called once per frame
@@ -69,12 +73,27 @@ public class billboard : MonoBehaviour {
 
         if (shouldShowMenu && !menu.isOpen)
         {
-            menu.ActivateMenu(menuOptionData);
+            menu.ActivateMenu(this.getFilteredMenuOptionData());
             menu.activeBillboard = this;
         } else if (!shouldShowMenu && menu.isOpen && menu.activeBillboard == this)
         {
             menu.CloseMenu();
         }
 
+    }
+
+    private MenuOption[] getFilteredMenuOptionData()
+    {
+        if (device == null)
+        {
+            return this.menuOptionData;
+        }
+
+        return this.menuOptionData.Where(c => {
+            return !(c.hideIfInfected && device.isInfected) &&
+                !(c.hideIfUninfected && !device.isInfected) &&
+                !(c.hideIfOn && device.isOn) &&
+                !(c.hideIfOff && !device.isOn);
+            }).ToArray();
     }
 }
