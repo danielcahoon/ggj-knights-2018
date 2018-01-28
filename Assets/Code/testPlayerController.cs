@@ -19,8 +19,9 @@ public class testPlayerController : MonoBehaviour {
 	Quaternion originalRotation;
 
 	// Health/Death
-	public int health;
+	public float health;
 	public string mainMenu;
+	public float timeLimit;
 
     private bool grabMouse = true;
 	// Use this for initialization
@@ -33,8 +34,8 @@ public class testPlayerController : MonoBehaviour {
     {
         readInput();
 
-        deathCheck ();
-        if (grabMouse)
+		ourUpdate ();
+		if (grabMouse)
         {
             mouseLook();
         }
@@ -100,5 +101,18 @@ public class testPlayerController : MonoBehaviour {
 		if (health <= 0 && mainMenu != "") { 
 			SceneManager.LoadScene(mainMenu);
 		}
+	}
+
+	public void takeDamage(float damage) {
+		health -= damage;
+	}
+
+	public float thermostatDamage() {
+		return (1 / timeLimit) * Time.deltaTime;
+	}
+
+	public void ourUpdate() {
+		takeDamage (thermostatDamage());
+		deathCheck ();
 	}
 }
