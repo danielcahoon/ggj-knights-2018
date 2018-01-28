@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -20,6 +21,8 @@ public class testPlayerController : MonoBehaviour {
 	// Health/Death
 	public int health;
 	public string mainMenu;
+
+    private bool grabMouse = true;
 	// Use this for initialization
 	void Start () {
 		originalRotation = transform.localRotation;
@@ -28,10 +31,13 @@ public class testPlayerController : MonoBehaviour {
 	// Update is called once per frame
 	void Update()
     {
-		deathCheck ();
-		Cursor.visible = false;
-		mouseLook ();
-        Cursor.visible = false;
+        readInput();
+
+        deathCheck ();
+        if (grabMouse)
+        {
+            mouseLook();
+        }
 
         var x = Input.GetAxis("Horizontal") * Time.deltaTime * 3.0f * this.transform.lossyScale.magnitude;
         var z = Input.GetAxis("Vertical") * Time.deltaTime * 3.0f * this.transform.lossyScale.magnitude;
@@ -40,7 +46,20 @@ public class testPlayerController : MonoBehaviour {
         transform.Translate(0, 0, z);
 	}
 
-	void mouseLook() {
+    private void readInput()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            grabMouse = false;
+        }
+
+        if (Input.GetMouseButton(0))
+        {
+            grabMouse = true;
+        }
+    }
+
+    void mouseLook() {
 		Cursor.lockState = CursorLockMode.Locked;
 		if (axes == RotationAxes.MouseXAndY)
 		{
@@ -78,7 +97,7 @@ public class testPlayerController : MonoBehaviour {
 	}
 
 	public void deathCheck() {
-		if (health <= 0) { 
+		if (health <= 0 && mainMenu != "") { 
 			SceneManager.LoadScene(mainMenu);
 		}
 	}
