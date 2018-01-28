@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityStandardAssets.Characters.FirstPerson;
 using UnityEngine;
 
 public class Doomba : MonoBehaviour {
 
 	// permanent properties (the Doomba NEVER gives up on a target)
-	public GameObject target = null;
 	public float moveSpeed = 1.0f;
 	public float turnSpeed = 90.0f;
 	public float diversionAngle = 20.0f;
@@ -19,6 +19,8 @@ public class Doomba : MonoBehaviour {
 	public string state = "bumbling";
 	public float endTime = -1.0f;
 
+	public FirstPersonController player;
+
 	// DARK MAGIC. DO NOT TOUCH.
 	private float intendedRotation = 0.0f;
 
@@ -31,7 +33,7 @@ public class Doomba : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(target == null) return;
+		if(player == null) return;
 
 		switch (state) {
 		case "bumbling":
@@ -66,6 +68,8 @@ public class Doomba : MonoBehaviour {
 		// ignore floors. they don't exist :3
 		if (collision.gameObject.tag == "floor")
 			return;
+		else if (collision.gameObject.tag == "Player")
+			player.takeDamage (20);
 
 		// switch to the "backingUp" state, for the specified amount of time
 		endTime = Time.time + (backupDistance / moveSpeed);
@@ -79,7 +83,7 @@ public class Doomba : MonoBehaviour {
 	void seek() {
 		forward ();
 
-		var targetVec = target.transform.position - transform.position;
+		var targetVec = player.transform.position - transform.position;
 		var rightVec = transform.right;
 		if (Vector3.Dot (targetVec, rightVec) < 0.0f) {
 			left ();

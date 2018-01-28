@@ -41,7 +41,8 @@ public class DoombaInfector : MonoBehaviour {
         if (Time.time > infectTime && !targetIsVisible())
         {
             target.infected = true;
-            device.setInfected();
+			device.setInfected();
+			target.state = "seeking";
             Destroy(this);
         }
 	}

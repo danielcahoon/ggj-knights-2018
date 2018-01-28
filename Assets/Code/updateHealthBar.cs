@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Characters.FirstPerson;
 
 public class updateHealthBar : MonoBehaviour {
-	public testPlayerController player;
+	public FirstPersonController player;
 	// Use this for initialization
 	void Start () {
 		
